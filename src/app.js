@@ -2,28 +2,21 @@ const express = require("express");
 
 const app = express();
 
-app.use("/user" ,(req ,res) =>{
-    res.send("HAHAHAHAHHAHAHAH");
+const {adminAuth ,userAuth} = require("./middlewares/auth");
+
+app.use("/admin" ,adminAuth);
+
+app.get("/user" , userAuth  , (req ,res) => {
+    res.send("user data is send")
+});
+
+app.get("/admin/getAllData" , (req ,res ) =>{
+    res.send("All data is here...");
 })
 
-app.get("/user" , (req ,res) =>{
-    res.send({firstName: "Sourabh" ,lastName :"joshi"})
+app.get("/admin/deleteData" , (req ,res) =>{
+    res.send("Deleted data is here...");
 });
-
-app.post("/user" , (req ,res) =>{
-    res.send("database updated successfully!!!");
-});
-
-app.delete("/user" ,(req ,res) =>{
-    res.send("deleted from the database");
-})
-
-
-app.use("/test" , (req , res) =>{
-    res.send("Testing route is workinggg fine!!!!!");
-});
-
-
 
 app.listen(3000 , () =>{
     console.log("working");
