@@ -15,6 +15,18 @@ app.post("/signup" , async (req ,res) => {
         res.status(400).send("user cannot created please check!!!");
     }
 });
+app.delete("/user" , async (req ,res) =>{
+   const userId = req.body.userId;
+
+   try{
+      const user = await User.findByIdAndDelete(userId);
+      res.send("user deleted successfully");
+   }
+   catch (err){
+      res.status(400).send("soemthing went wrong");
+   }
+})
+
 
 app.get("/user" , async (req ,res) => {
    const userEmail = req.body.email;
@@ -49,6 +61,38 @@ app.get("/feed" , async (req , res) => {
       res.status(400).send("something went wrong");
    }
 })
+
+// app.patch("/user" , async (req ,res) =>{
+//    const userId = req.body.userId;
+//    const data = req.body;
+
+//    try{
+//       await User.findByIdAndUpdate({_id : userId} ,data);
+//       res.send("user updated successfully");
+//    }
+//    catch(err) {
+//       res.status(400).send("something wrong");
+//    }
+// })
+
+app.patch("/user" , async(req ,res) =>{
+   const userEmail = req.body.email;
+   const data = req.body;
+
+   try{
+      const updatedUser = await User.findOneAndUpdate({email : userEmail} , data , {new : true})
+      if(!updatedUser){
+         res.status(404).send("user not found");
+      }
+      else{   
+      res.send("user updated succesfully ");
+      }
+   }
+   catch(err){
+      res.status(400).send("some error occured");
+   }
+})
+
 
 connectDB().then(() => {
     console.log("database connction successfull");
