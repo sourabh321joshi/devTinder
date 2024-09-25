@@ -12,7 +12,7 @@ app.post("/signup" , async (req ,res) => {
         await user.save();
      res.send("user created successfully");
      } catch (err) { 
-        res.status(400).send("user cannot created please check!!!");
+        res.status(400).send("user cannot created please check!!!" + err);
     }
 });
 app.delete("/user" , async (req ,res) =>{
@@ -62,36 +62,39 @@ app.get("/feed" , async (req , res) => {
    }
 })
 
-// app.patch("/user" , async (req ,res) =>{
-//    const userId = req.body.userId;
-//    const data = req.body;
-
-//    try{
-//       await User.findByIdAndUpdate({_id : userId} ,data);
-//       res.send("user updated successfully");
-//    }
-//    catch(err) {
-//       res.status(400).send("something wrong");
-//    }
-// })
-
-app.patch("/user" , async(req ,res) =>{
-   const userEmail = req.body.email;
+app.patch("/user" , async (req ,res) =>{
+   const userId = req.body.userId;
    const data = req.body;
 
    try{
-      const updatedUser = await User.findOneAndUpdate({email : userEmail} , data , {new : true})
-      if(!updatedUser){
-         res.status(404).send("user not found");
-      }
-      else{   
-      res.send("user updated succesfully ");
-      }
+      await User.findByIdAndUpdate({_id : userId} ,data ,{
+         returnDocument : "after",
+         runValidators : true,
+      });
+      res.send("user updated successfully");
    }
-   catch(err){
-      res.status(400).send("some error occured");
+   catch(err) {
+      res.status(400).send("update failed : " + err.message);
    }
 })
+
+// app.patch("/user" , async(req ,res) =>{
+//    const userEmail = req.body.email;
+//    const data = req.body;
+
+//    try{
+//       const updatedUser = await User.findOneAndUpdate({email : userEmail} , data , {new : true})
+//       if(!updatedUser){
+//          res.status(404).send("user not found");
+//       }
+//       else{   
+//       res.send("user updated succesfully ");
+//       }
+//    }
+//    catch(err){
+//       res.status(400).send("some error occured");
+//    }
+// })
 
 
 connectDB().then(() => {
