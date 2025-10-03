@@ -48,7 +48,7 @@ const userSchema = new mongoose.Schema({
     },
     photoUrl : {
         type : String,
-        default : "http://abc.png",
+        default : "https://plus.unsplash.com/premium_photo-1738590017220-5820f49608cc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8ZGVmYXVsdCUyMHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fHww",
     },
     about : {
         type  : String , 
