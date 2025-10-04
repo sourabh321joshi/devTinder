@@ -5,6 +5,8 @@ const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const {userAuth} = require("./middlewares/auth");
 const cors = require("cors");
+const http = require("http"); 
+
 require("dotenv").config();
 
 app.use(cors({
@@ -18,16 +20,21 @@ const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
+const initializeSocket = require("./utils/socket");
 
 app.use("/" , authRouter);
 app.use("/" , profileRouter);
 app.use("/" , requestRouter);
 app.use("/" , userRouter);
 
+const server = http.createServer(app);
+initializeSocket(server); 
+
+
 
 connectDB().then(() => {
     console.log("database connection established");
-    app.listen(3000 , () =>{
+    server.listen(3000 , () =>{
     console.log("server working on port 3000");
 });
  }).catch((err) => {
