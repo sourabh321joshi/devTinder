@@ -9,11 +9,15 @@ const http = require("http");
 
 require("dotenv").config();
 
-app.use(cors({
-    origin: "http://localhost:5173",
-    "https://dev-tinder-web-two-zeta.vercel.app",
-    credentials:true,
-}));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://dev-tinder-web-two-zeta.vercel.app",
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 
